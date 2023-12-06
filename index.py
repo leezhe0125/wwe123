@@ -1,5 +1,4 @@
 import firebase_admin
-import requests,json
 import requests
 
 from firebase_admin import credentials, firestore
@@ -64,7 +63,7 @@ for x in JsonData:
 		print("事故發生的主要原因是因爲" + x["主要肇因"])
 		print()
         return Result
-    else:
+else:
         return render_template("search.html")
 
 	
