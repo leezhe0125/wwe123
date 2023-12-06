@@ -22,7 +22,7 @@ def index():
     X += "<br><a href=/read3>圖書精選</a><br>"
     X += "<br><a href=/search>Search</a><br>"
     X += "<br><a href=/movie>讀取開眼電影即將上映影片，寫入Firestore</a><br>"
-    X += "<a href=/json>車禍查詢路口</a><br>"
+    X += "<br><a href=/search>車禍查詢路口</a><br>"
     return X
 
 @app.route("/db")
