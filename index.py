@@ -1,5 +1,5 @@
 import firebase_admin
-import requests
+import requests, json
 
 from firebase_admin import credentials, firestore
 cred = credentials.Certificate("serviceAccountKey.json")
@@ -22,6 +22,7 @@ def index():
     X += "<br><a href=/read3>圖書精選</a><br>"
     X += "<br><a href=/search>Search</a><br>"
     X += "<br><a href=/movie>讀取開眼電影即將上映影片，寫入Firestore</a><br>"
+    X += "<br><a href=/dataB>DataSearch</a><br>"
     return X
 
 @app.route("/db")
@@ -130,6 +131,22 @@ def movie():
         doc_ref.set(doc)
     return "近期上映電影已爬蟲及存檔完畢，網站最近更新日期為：" + lastUpdate
 
+@app.route("/dataB", methods=["GET", "POST"])
+def dataB():
+    if request.method == "POST":
+        Road = request.form["Road"]
+        Result = "請輸入欲查詢的路名： " + Road
+        Result += "<br>"
+        url = "https://datacenter.taichung.gov.tw/swagger/OpenData/db36e286-1d2b-4784-99b9-3b0790dd9652"
+        Data = requests.get(url)
+        JsonData = json.loads(Data.text)
+
+        for x in JsonData:
+            if Road in x["路口名稱"]:
+                Result += x["路口名稱"] + ":發生" + x["總件數"] + "件，主因是" + x["主要肇因"] + "<br>"
+        return Result
+    else:
+        return render_template("datasearch.html") 
 
 if __name__ == "__main__":
     app.run(debug=True)
