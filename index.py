@@ -20,7 +20,7 @@ def index():
     X += "<br><a href=/read>讀取Firestore資料</a><br>"
     X += "<br><a href=/read2>人選之人─造浪者</a><br>"
     X += "<br><a href=/read3>圖書精選</a><br>"
-    X += "<br><a href=/search>Search</a><br>"
+    X += "<br><a href=/search>車禍查詢路口</a><br>"
     X += "<br><a href=/movie>讀取開眼電影即將上映影片，寫入Firestore</a><br>"
     X += "<br><a href=/dataB>DataSearch</a><br>"
     return X
@@ -47,6 +47,7 @@ def account():
     else:
         return render_template("account.html")
 
+
 @app.route("/search", methods=["GET", "POST"])
 def search():
     if request.method == "POST":
@@ -64,7 +65,7 @@ def search():
         return Result
     else:
         return render_template("search.html")
-    
+	
 @app.route("/read")
 def read():
     Result = ""
