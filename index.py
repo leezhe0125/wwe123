@@ -49,20 +49,18 @@ def account():
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
-    import requests,json
-url = "https://datacenter.taichung.gov.tw/swagger/OpenData/db36e286-1d2b-4784-99b9-3b0790dd9652"
-Data = requests.get(url)
-#print(Data.text)
+    if request.method == "POST":
+        keyword = request.form["user"]
+        Result = "Input name : " + keyword
 
-JsonData = json.loads(Data.text)
-
-Road = input("請輸入慾查詢的路段關鍵字:")
-
-for x in JsonData:
-	if Road in x["路口名稱"]:
-		print(x["路口名稱"] + "總共發生了" + x["總件數"] + "次車禍")
-		print("事故發生的主要原因是因爲" + x["主要肇因"])
-		print()
+        Result += "<br>"
+        db = firestore.client()
+        collection_ref = db.collection("人選之人─造浪者")    
+        docs = collection_ref.order_by("birth").get()
+        for doc in docs:         
+            x = doc.to_dict()
+            if keyword in x["name"]:
+                Result += "Name : " + x["name"] + ", Role : " + x["role"] + ", Birth : " + str(x["birth"]) + "<br>"
         return Result
     else:
         return render_template("search.html")
